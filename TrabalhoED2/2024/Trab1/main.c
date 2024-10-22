@@ -29,12 +29,12 @@ Node *CriarNo(){
     NovoNo->isFolha = 1; // 1 - True
     NovoNo->numeroChave = 0;
     NovoNo->proximo= NULL;
-    for (int i = 0; i < Ordem - 2; i++)
+    for (int i = 0; i < Ordem - 1; i++)
     {
         NovoNo->Chaves[i] = 0;
-        NovoNo->ponteiros[i] = NULL;
+        NovoNo->Filhos[i] = NULL;
     }
-    NovoNo->ponteiros[Ordem - 2] = NULL;
+    NovoNo->Filhos[Ordem] = NULL;
     return NovoNo;
     
 }
@@ -46,8 +46,10 @@ Node *Inserir(Node *ArvoreB, int chave){
         NovaArvoreB->Chaves[0] = chave;
         NovaArvoreB->numeroChave = 1;
         return NovaArvoreB;
-    }else if(ArvoreB->numeroChave == (Ordem-1)){
-
+    }
+    if(ArvoreB->numeroChave == 4){
+         ArvoreB = Dividir(ArvoreB,chave);
+         return ArvoreB;
     }
     else{
 
@@ -77,7 +79,15 @@ Node *Inserir(Node *ArvoreB, int chave){
 }
 
 Node *Dividir(Node * ArvoreB, int chave){
-    int ChavePromovida = ArvoreB->Chaves[2];
+    Node *NovaArvore = CriarNo();
+    int meio = ArvoreB->numeroChave/2;
+    int ChavePromovida = ArvoreB->Chaves[meio];
+
+   NovaArvore = Inserir(NovaArvore,ChavePromovida);
+   NovaArvore = Inserir(NovaArvore->Filhos[0], 1);
+   NovaArvore = Inserir(NovaArvore->Filhos[1], 3);
+   NovaArvore = Inserir(NovaArvore->Filhos[1], 3); 
+   return NovaArvore;
     
 }
 int main (){
@@ -87,6 +97,7 @@ int main (){
     Arvore = Inserir(Arvore,4);
     Arvore = Inserir(Arvore,3);
     Arvore = Inserir(Arvore,2);
+    Arvore = Inserir(Arvore,5);
 
     printf("    Chave na pos 0: %d\n", Arvore->Chaves[0]);
     printf("    Chave na pos 1: %d\n", Arvore->Chaves[1]);
