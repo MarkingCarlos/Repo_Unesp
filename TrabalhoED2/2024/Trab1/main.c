@@ -39,6 +39,9 @@ Node *CriarNo(){
     
 }
 
+// Declaração do protótipo da função Dividir
+Node *Dividir(Node *ArvoreB, int chave);
+
 Node *Inserir(Node *ArvoreB, int chave){
     if (ArvoreB == NULL)
     {
@@ -48,6 +51,7 @@ Node *Inserir(Node *ArvoreB, int chave){
         return NovaArvoreB;
     }
     if(ArvoreB->numeroChave == 4){
+         printf("Divide");
          ArvoreB = Dividir(ArvoreB,chave);
          return ArvoreB;
     }
@@ -83,11 +87,23 @@ Node *Dividir(Node * ArvoreB, int chave){
     int meio = ArvoreB->numeroChave/2;
     int ChavePromovida = ArvoreB->Chaves[meio];
 
-   NovaArvore = Inserir(NovaArvore,ChavePromovida);
-   NovaArvore = Inserir(NovaArvore->Filhos[0], 1);
-   NovaArvore = Inserir(NovaArvore->Filhos[1], 3);
-   NovaArvore = Inserir(NovaArvore->Filhos[1], 3); 
-   return NovaArvore;
+    //insere a chave promovida no novo nó
+    NovaArvore = Inserir(NovaArvore,ChavePromovida);
+
+    for (int i = 0; i < meio; i++)
+    {
+        NovaArvore = Inserir(NovaArvore->Filhos[0], ArvoreB->Chaves[i]);
+    }
+    for (int i = (meio + 1); i < (Ordem-1); i++)
+    {
+        NovaArvore = Inserir(NovaArvore->Filhos[1], ArvoreB->Chaves[i]);
+    }
+    
+
+    //NovaArvore = Inserir(NovaArvore->Filhos[0], 1);
+    //NovaArvore = Inserir(NovaArvore->Filhos[1], 3);
+    //NovaArvore = Inserir(NovaArvore->Filhos[1], 3); 
+    return NovaArvore;
     
 }
 int main (){
@@ -99,11 +115,11 @@ int main (){
     Arvore = Inserir(Arvore,2);
     Arvore = Inserir(Arvore,5);
 
-    printf("    Chave na pos 0: %d\n", Arvore->Chaves[0]);
-    printf("    Chave na pos 1: %d\n", Arvore->Chaves[1]);
-    printf("    Chave na pos 2: %d\n", Arvore->Chaves[2]);
-    printf("    Chave na pos 3: %d\n", Arvore->Chaves[3]);
-    printf("    Numero de Chaves: %d\n", Arvore->numeroChave);
+    printf("    Chave na pos 0: %d\n", Arvore->Filhos[0]->Chaves[0]);
+    //printf("    Chave na pos 1: %d\n", Arvore->Chaves[1]);
+    //printf("    Chave na pos 2: %d\n", Arvore->Chaves[2]);
+    //printf("    Chave na pos 3: %d\n", Arvore->Chaves[3]);
+   // printf("    Numero de Chaves: %d\n", Arvore->numeroChave);
 
     printf("Final");
 }
