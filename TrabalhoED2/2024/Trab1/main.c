@@ -32,9 +32,9 @@ Node *CriarNo(){
     for (int i = 0; i < Ordem - 2; i++)
     {
         NovoNo->Chaves[i] = 0;
-        NovoNo->ponteiros[i] = NULL;
+        NovoNo->Filhos[i] = NULL;
     }
-    NovoNo->ponteiros[Ordem - 2] = NULL;
+    NovoNo->Filhos[Ordem - 2] = NULL;
     return NovoNo;
     
 }
