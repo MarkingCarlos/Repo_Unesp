@@ -1,0 +1,2 @@
+gcc main.c funcoes.c -o meu_programa
+./meu_programa
