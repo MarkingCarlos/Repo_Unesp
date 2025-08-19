@@ -23,7 +23,7 @@ void ProcessoScheduler(scheduler_t* scheduler, scheduler_flag_t flags) {
     process_t* curr_scheduled = scheduler->scheduled_proc;
     process_t* new_scheduled = NULL;
 
-    // Procurar na high_queue o processo com mais operações de E/S
+    // Procurar na high_queue o processo com MENOR número de operações de E/S
     process_t* selected_proc = NULL;
     list_node_t* node = scheduler->high_queue->queue->head;
 
@@ -32,9 +32,10 @@ void ProcessoScheduler(scheduler_t* scheduler, scheduler_flag_t flags) {
         int p_io = p->io_read_count + p->io_write_count;
         int selected_io = selected_proc ? selected_proc->io_read_count + selected_proc->io_write_count : -1;
 
-        // Seleciona o processo com maior I/O, desempate por menor ID
+        // Se selected_proc for NULL (primeiro processo), ou se p_io for menor que selected_io,
+        // ou se p_io for igual a selected_io mas p.id for menor (critério de desempate).
         if (!selected_proc ||
-            (p_io > selected_io) ||
+            (p_io < selected_io) || // prioriza menor I/O (era p_io > selected_io)
             (p_io == selected_io && p->id < selected_proc->id)) {
             selected_proc = p;
         }
@@ -54,16 +55,7 @@ void ProcessoScheduler(scheduler_t* scheduler, scheduler_flag_t flags) {
                                                   new_scheduled->remaining + scheduler->low_queue->quantum));
     }
 
-    // Recoloca o processo atual em fila apropriada ou bloqueia
-    if (curr_scheduled) {
-        if ((flags & IO_REQUESTED) || (flags & SEMAPHORE_BLOCKED)) {
-            AdicionaLista(scheduler->blocked_queue->queue, curr_scheduled);
-        } else if (curr_scheduled->remaining > 0) {
-            AdicionaLista(scheduler->low_queue->queue, curr_scheduled);
-        } else {
-            AdicionaLista(scheduler->high_queue->queue, curr_scheduled);
-        }
-    }
+
 
     scheduler->scheduled_proc = new_scheduled;
 }
