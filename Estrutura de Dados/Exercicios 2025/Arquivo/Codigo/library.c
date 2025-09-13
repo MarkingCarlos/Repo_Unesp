@@ -1,4 +1,4 @@
-#include "library.h"
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,9 +14,9 @@ void main() {
     printf("Desaja começar arquivo do 0?\n0-Nao\n1-Sim\n");
     scanf("%d",&op);
     if(op==1) {
-        file = fopen("lista.txt","w");
+        file = fopen("lista.txt","w");//abre o arquivo para escrita apagando o conteúdo
     }else {
-        file = fopen("lista.txt","a");
+        file = fopen("lista.txt","a");//abre para escrita sem apagar o conteúdo
     }
 
 
