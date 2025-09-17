@@ -2,22 +2,22 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define quantidadeMatriz 2
+#define quantidadeMatriz 10
 void popularMatriz_Vetor(float Matriz[quantidadeMatriz][quantidadeMatriz], FILE *arquivo, float VetorResultados[quantidadeMatriz]);
 void popularCom(float VetorX[quantidadeMatriz], float numero);
 void metodoJacobi(float Matriz[quantidadeMatriz][quantidadeMatriz], float vetorCoeficientes[quantidadeMatriz], float vetorIteracaoAtual[quantidadeMatriz],int auxNumInte);
 void transferirVetor(float VetorRecebe[quantidadeMatriz], float VetorEnvia[quantidadeMatriz]);
+
 int main(void) {
     FILE *arquivo;
     float Matriz[quantidadeMatriz][quantidadeMatriz];
     float vetorCoeficientes[quantidadeMatriz], vetorIteracaoAtual[quantidadeMatriz];
-    arquivo = fopen("../linear2.dat", "r");
+    arquivo = fopen("../linear10.dat", "r");
 
     if (arquivo == NULL) {
         perror("Erro ao abrir o arquivo");
         return 1;
     }
-
 
     popularMatriz_Vetor(Matriz, arquivo, vetorCoeficientes);
     popularCom(vetorIteracaoAtual,0);
@@ -42,46 +42,12 @@ void metodoJacobi(float Matriz[quantidadeMatriz][quantidadeMatriz], float vetorC
 
             }
             else {
-                if (auxNumInte == 1) {
-                    // printf("vetorAux[%d] = %.5f + (%.5f * %.5f)\n",
-                    //    iLinha,
-                    //    vetorAux[iLinha],
-                    //    Matriz[iLinha][indice],
-                    //    vetorIteracaoAtual[indice]);
-                    // getchar();
-                }
-
                 vetorAux[iLinha] = vetorAux[iLinha] - Matriz[iLinha][indice] * (vetorIteracaoAtual[indice]);
-
-
             }
         }
-        // if (auxNumInte == 1) {
-        //     printf("vetor Atual Linha 0[] = %.5f \n",vetorIteracaoAtual[0]);
-        //     printf("vetorAux[%d] = %.5f + %.5f\n",
-        //    iLinha,
-        //    vetorAux[iLinha],
-        //    vetorCoeficientes[iLinha]);
-        //     getchar();
-        //
-        // }
 
+        // Pega o valor do X que foi isolado e passa para o outro lado
         vetorAux[iLinha]= vetorAux[iLinha] + vetorCoeficientes[iLinha];
-
-        // if (auxNumInte == 1) {
-        //     printf("vetorAux[%d] = %.5f",iLinha, vetorAux[iLinha]);
-        //     getchar();
-        // }
-        //
-        // if (auxNumInte == 1) {
-        //     printf("vetorAux[%d] = %.5f / %.5f\n",
-        //    iLinha,
-        //    vetorAux[iLinha],
-        //    Matriz[iLinha][iColuna]);
-        //     getchar();
-        //
-        // }
-
 
         vetorAux[iLinha] = vetorAux[iLinha]/Matriz[iLinha][iColuna];
 
@@ -98,7 +64,7 @@ void metodoJacobi(float Matriz[quantidadeMatriz][quantidadeMatriz], float vetorC
             printf("A diferença entre é menor que 1e-5\n");
             parada = 1;
         } else {
-            // printf("A diferença é maior ou igual a 1e-5\n");
+
             parada = 0;
 
         }
@@ -106,12 +72,7 @@ void metodoJacobi(float Matriz[quantidadeMatriz][quantidadeMatriz], float vetorC
 
     if (parada == 0) {
 
-        // printf("VetorAux 0: %.4f \n", vetorAux[1]);
-
-        // popularCom(vetorIteracaoAtual,vetorAux[0]);
         transferirVetor(vetorIteracaoAtual,vetorAux);
-
-        // printf("Vetor Atual dps de atualizar linha 0 %.4f \n", vetorIteracaoAtual[1]);
         metodoJacobi(Matriz, vetorCoeficientes,vetorIteracaoAtual,1);
     }else {
         return;
@@ -148,18 +109,5 @@ void popularMatriz_Vetor(float Matriz[quantidadeMatriz][quantidadeMatriz], FILE 
 
 
     }
-    //Imprime Matriz
-    // for (indice_linha = 0; indice_linha < 11; indice_linha++) {
-    //     if (indice_linha == 10) {
-    //         for (indice_coluna = 0 ; indice_coluna < 10; indice_coluna++) {
-    //             printf("Vetor[%d]: %.4f\n", indice_coluna, VetorResultados[indice_coluna]);
-    //         }
-    //     }else {
-    //         for (indice_coluna = 0 ; indice_coluna < 10; indice_coluna++) {
-    //             printf("Matriz[%d][%d]: %.4f\n",indice_linha, indice_coluna, Matriz[indice_linha][indice_coluna]);
-    //         }
-    //     }
-    //
-    // }
 
 }
