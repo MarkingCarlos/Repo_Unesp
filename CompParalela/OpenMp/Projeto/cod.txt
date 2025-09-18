@@ -1,0 +1,5 @@
+gcc -fopenmp -o jacobi_omp main.c -lm
+
+
+export OMP_NUM_THREADS=4
+./jacobi_omp
