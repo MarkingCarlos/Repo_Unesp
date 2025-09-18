@@ -61,20 +61,27 @@ void metodoJacobi(float A[tamanhoMatriz][tamanhoMatriz], float b[tamanhoMatriz],
 }
 
 int main() {
-    float Matriz[tamanhoMatriz][tamanhoMatriz], vetorCoeficientes[tamanhoMatriz], x[tamanhoMatriz];
-    FILE *arquivo = fopen("../linear10.dat", "r");
+        float Matriz[tamanhoMatriz][tamanhoMatriz], vetorCoeficientes[tamanhoMatriz], x[tamanhoMatriz];
+        FILE *arquivo = fopen("../linear10.dat", "r");
 
-    if (!arquivo) {
-        perror("Erro ao abrir arquivo de entrada");
-        return 1;
-    }
+        if (!arquivo) {
+            perror("Erro ao abrir arquivo de entrada");
+            return 1;
+        }
 
-    lerMatriz(arquivo, Matriz, vetorCoeficientes);
-    fclose(arquivo);
+        lerMatriz(arquivo, Matriz, vetorCoeficientes);
+        fclose(arquivo);
 
-    metodoJacobi(Matriz, vetorCoeficientes, x);
+        double inicio = omp_get_wtime();
 
-    escreveSaida("saida.txt", x);
+        metodoJacobi(Matriz, vetorCoeficientes, x);
 
-    return 0;
+        double fim = omp_get_wtime();
+
+        printf("Tempo de execucao: %.6f segundos\n", fim - inicio);
+
+        escreveSaida("saida.txt", x);
+
+        return 0;
+
 }
